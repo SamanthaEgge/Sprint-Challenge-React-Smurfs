@@ -43,6 +43,20 @@ class App extends Component {
       })
   }
 
+  updateSmurf = (event, smurf) => {
+    event.preventDefault();
+    console.log()
+    axios
+      .post('http://localhost:3333/smurfs', smurf)
+      .then(response => this.setState({ smurfs: response.data }))
+      .catch(error => console.error('Server error', error))
+  }
+
+  setUpdateFields = (event, smurf) => {
+    event.preventDefault();
+    this.setState({activeSmurf: smurf})
+  }
+
   removeSmurf = (event, smurfId) => {
     event.preventDefault();
     console.log(smurfId);
@@ -72,12 +86,12 @@ class App extends Component {
         <div className='smurfs'>
         <Route exact path='/' 
           render={(props) => 
-          <Smurfs {...props} smurfs={this.state.smurfs} removeSmurf={this.removeSmurf} />} />
+          <Smurfs {...props} smurfs={this.state.smurfs} removeSmurf={this.removeSmurf} setUpdateFields={this.setUpdateFields} />} />
         </div>
 
         <Route exact path='/smurf-form' 
           render={(props) => 
-          <SmurfForm addSmurf={this.addSmurf} />} />
+          <SmurfForm addSmurf={this.addSmurf} updateSmurf={this.updateSmurf} activeSmurf={this.state.activeSmurf} />} />
       </div>
     );
   }
